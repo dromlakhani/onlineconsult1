@@ -14,13 +14,25 @@ function App() {
     email: '',
     contact_number: '',
     city: '',
-    payment_confirmed: false,
+    payment_screenshot: '',
+    previous_prescription: '',
+    investigation_report: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [isAdminView, setIsAdminView] = useState(false);
 
-  const steps = ['Name', 'Consultation Type', 'Email', 'Contact Number', 'City', 'Payment'];
+  const steps = [
+    'Name',
+    'Consultation Type',
+    'Email',
+    'Contact Number',
+    'City',
+    'Payment Information',
+    'Upload Payment Screenshot',
+    'Upload Previous Prescription',
+    'Upload Investigation Report'
+  ];
 
   const handleInputChange = (field: keyof PatientInfo, value: string | boolean) => {
     setFormData({ ...formData, [field]: value });
@@ -39,8 +51,18 @@ function App() {
   };
 
   const handleSubmit = () => {
-    if (!formData.payment_confirmed) {
-      setSubmitMessage('Please confirm that you have made the payment before submitting.');
+    if (!formData.payment_screenshot) {
+      setSubmitMessage('Please upload a screenshot of your payment before submitting.');
+      return;
+    }
+
+    if (!formData.previous_prescription) {
+      setSubmitMessage('Please upload your previous prescription before submitting.');
+      return;
+    }
+
+    if (!formData.investigation_report) {
+      setSubmitMessage('Please upload your investigation report before submitting.');
       return;
     }
 
@@ -57,7 +79,9 @@ function App() {
         email: '',
         contact_number: '',
         city: '',
-        payment_confirmed: false,
+        payment_screenshot: '',
+        previous_prescription: '',
+        investigation_report: '',
       });
       setCurrentStep(0);
     } catch (error) {
@@ -114,7 +138,7 @@ function App() {
                 <button
                   onClick={handleSubmit}
                   className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 ml-auto disabled:bg-blue-300"
-                  disabled={isSubmitting || !formData.payment_confirmed}
+                  disabled={isSubmitting || !formData.payment_screenshot || !formData.previous_prescription || !formData.investigation_report}
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit'}
                   <Send size={20} className="ml-2" />

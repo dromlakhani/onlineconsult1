@@ -27,7 +27,8 @@ const AdminPage: React.FC<AdminPageProps> = ({ onBack }) => {
     const a = document.createElement('a');
     a.style.display = 'none';
     a.href = url;
-    a.download = 'patient_data.csv';
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    a.download = `patient_data_${timestamp}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

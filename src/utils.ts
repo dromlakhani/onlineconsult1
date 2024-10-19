@@ -19,11 +19,21 @@ export function savePatientData(data: PatientInfo): void {
 }
 
 function convertToCSV(data: any[]): string {
-  const headers = ['timestamp', 'name', 'consultation_type', 'email', 'contact_number', 'city', 'payment_confirmed'];
+  const headers = [
+    'timestamp',
+    'name',
+    'consultation_type',
+    'email',
+    'contact_number',
+    'city',
+    'payment_screenshot',
+    'previous_prescription',
+    'investigation_report'
+  ];
   const csvRows = [
     headers.join(','),
     ...data.map(row => 
-      headers.map(header => row[header] !== undefined ? row[header].toString() : '').join(',')
+      headers.map(header => row[header] !== undefined ? `"${row[header].toString().replace(/"/g, '""')}"` : '').join(',')
     )
   ];
   return csvRows.join('\n');

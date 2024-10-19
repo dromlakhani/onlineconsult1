@@ -1,5 +1,7 @@
 import React from 'react';
 import { PatientInfo } from '../types';
+import { FileUploaderMinimal, OutputFileEntry } from '@uploadcare/react-uploader';
+import '@uploadcare/react-uploader/core.css';
 
 interface PatientFormProps {
   currentStep: number;
@@ -108,18 +110,57 @@ const PatientForm: React.FC<PatientFormProps> = ({
             <p className="mb-4">Please make the payment of Rs. 1000 using the QR code given below or using the UPI id 9825957844@pthdfc</p>
             <img src="https://i.ibb.co/ts359vk/Clean-Shot-2024-10-05-at-06-eckysgnlkf.png" alt="Payment QR Code" className="w-full max-w-xs mx-auto mb-4" />
             <p className="mb-4">OR USE THE QR CODE GIVEN</p>
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="payment_confirmed"
-                checked={formData.payment_confirmed}
-                onChange={(e) => handleInputChange('payment_confirmed', e.target.checked)}
-                className="mr-2"
-              />
-              <label htmlFor="payment_confirmed" className="text-sm font-medium text-gray-700">
-                I confirm that I have made the payment
-              </label>
-            </div>
+          </div>
+        );
+      case 6:
+        return (
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold mb-2">Upload Payment Screenshot</h3>
+            <p className="mb-4">Please upload a screenshot of your payment confirmation:</p>
+            <FileUploaderMinimal
+              classNameUploader="uc-light"
+              pubkey="16cd1af56844e9d6ec33"
+              onChange={(info) => {
+                const file = info.successEntries[0] as OutputFileEntry;
+                if (file && file.cdnUrl) {
+                  handleInputChange('payment_screenshot', file.cdnUrl);
+                }
+              }}
+            />
+          </div>
+        );
+      case 7:
+        return (
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold mb-2">Upload Previous Prescription</h3>
+            <p className="mb-4">Please upload your previous prescription (if any):</p>
+            <FileUploaderMinimal
+              classNameUploader="uc-light"
+              pubkey="16cd1af56844e9d6ec33"
+              onChange={(info) => {
+                const file = info.successEntries[0] as OutputFileEntry;
+                if (file && file.cdnUrl) {
+                  handleInputChange('previous_prescription', file.cdnUrl);
+                }
+              }}
+            />
+          </div>
+        );
+      case 8:
+        return (
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold mb-2">Upload Investigation Report</h3>
+            <p className="mb-4">Please upload your current investigation report:</p>
+            <FileUploaderMinimal
+              classNameUploader="uc-light"
+              pubkey="16cd1af56844e9d6ec33"
+              onChange={(info) => {
+                const file = info.successEntries[0] as OutputFileEntry;
+                if (file && file.cdnUrl) {
+                  handleInputChange('investigation_report', file.cdnUrl);
+                }
+              }}
+            />
           </div>
         );
       default:
@@ -131,6 +172,11 @@ const PatientForm: React.FC<PatientFormProps> = ({
     <div className="mt-8">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Online Consultation with Dr. Om J Lakhani</h2>
       {renderStep()}
+      {currentStep === 5 && (
+        <div className="mt-4">
+          <p>After making the payment, click "Next" to upload your payment screenshot.</p>
+        </div>
+      )}
     </div>
   );
 };

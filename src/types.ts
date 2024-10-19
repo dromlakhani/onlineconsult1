@@ -4,5 +4,7 @@ export interface PatientInfo {
   email: string;
   contact_number: string;
   city: string;
-  payment_confirmed: boolean;
+  payment_screenshot: string;
+  previous_prescription: string;
+  investigation_report: string;
 }
